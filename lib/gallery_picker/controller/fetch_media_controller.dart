@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class FetchMediaController extends ChangeNotifier {
+  final RequestType type;
   final FilterOptionGroup _filterOptionGroup = FilterOptionGroup(
     imageOption: const FilterOption(
       sizeConstraint: SizeConstraint(ignoreSize: true),
@@ -19,6 +20,8 @@ class FetchMediaController extends ChangeNotifier {
   bool isLoading = false;
   bool isLoadingMore = false;
   bool hasMoreToLoad = true;
+
+  FetchMediaController({ this.type = RequestType.image});
 
   Future<List<AssetEntity>?> requestAssets() async {
     isLoading = true;
@@ -37,6 +40,7 @@ class FetchMediaController extends ChangeNotifier {
     }
     final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
       onlyAll: true,
+      type: type,
       filterOption: _filterOptionGroup,
     );
 

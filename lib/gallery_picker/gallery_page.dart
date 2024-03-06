@@ -35,7 +35,7 @@ class _GalleryPageState extends State<GalleryPage> {
             builder: (context, child) {
               return GridView.custom(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 3,
                 ),
                 childrenDelegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {

@@ -6,10 +6,50 @@ import 'package:photo_manager/photo_manager.dart';
 class GalleryPickerController extends ChangeNotifier {
   final GalleryPickerOption option;
   GalleryPickerController({required this.option});
-  XFile? _pickedFile;
 
-  XFile? get pickedFile => _pickedFile;
+  late List<AssetEntity> picked = [];
+
+  final pickedNotifier = ValueNotifier<List<AssetEntity>>([]);
+
+  final onPickMax = ChangeNotifier();
+
+  ValueNotifier<int> get maxSelection => ValueNotifier<int>(option.maxPickMedia ?? 5);
+
+  int get max => maxSelection.value;
+
+
+  bool get singleMode => maxSelection.value == 1;
+
+  void pickEntity(AssetEntity entity) {
+    if (singleMode) {
+      if (picked.contains(entity)) {
+        picked.remove(entity);
+      } else {
+        picked.clear();
+        picked.add(entity);
+      }
+    } else {
+      if (picked.contains(entity)) {
+        picked.remove(entity);
+      } else {
+        if (picked.length == maxSelection.value) {
+          onPickMax.notifyListeners();
+          return;
+        }
+        picked.add(entity);
+      }
+    }
+    pickedNotifier.value = picked;
+    pickedNotifier.notifyListeners();
+    notifyListeners();
+  }
+
+  int pickIndex(AssetEntity entity) {
+    return picked.indexOf(entity) +1;
+  }
+
 }
+
 
 class GalleryPickerOption {
   final int? maxPickMedia;

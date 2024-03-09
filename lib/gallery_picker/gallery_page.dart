@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryPage extends StatefulWidget {
-  const GalleryPage({super.key});
+  final GalleryPickerController? galleryPickerController;
+  final FetchMediaController? fetchMediaController;
+  const GalleryPage({super.key,  this.galleryPickerController,  this.fetchMediaController});
 
   @override
   State<GalleryPage> createState() => _GalleryPageState();
@@ -19,8 +21,8 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   void initState() {
-    _fetchMediaController = FetchMediaController();
-    _galleryPickerController = GalleryPickerController(option: GalleryPickerOption());
+    _fetchMediaController = widget.fetchMediaController ?? FetchMediaController();
+    _galleryPickerController =  widget.galleryPickerController ?? GalleryPickerController(option: GalleryPickerOption());
     super.initState();
   }
 
@@ -48,7 +50,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     return ImageItemWidget(
                       key: ValueKey<int>(index),
                       entity: entity,
-                      option: _galleryPickerController.option.thumbnailOption,
+                      controller: _galleryPickerController,
                     );
                   },
                   childCount: entities.length,

@@ -1,4 +1,7 @@
+import 'package:cross_gallery_file_picker/gallery_picker/controller/fetch_media_controller.dart';
+import 'package:cross_gallery_file_picker/gallery_picker/controller/gallery_picker_controller.dart';
 import 'package:cross_gallery_file_picker/gallery_picker/gallery_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,18 +35,35 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home:  MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class MyHomePage extends StatefulWidget {
+   const MyHomePage({super.key});
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late GalleryPickerController galleryPickerController;
+@override
+  void initState() {
+  galleryPickerController = GalleryPickerController(option: GalleryPickerOption(maxPickMedia: 6));
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: GalleryPage(),
+    return  Scaffold(
+      body: GalleryPage(
+        galleryPickerController:galleryPickerController ,
+      ),
+      bottomNavigationBar: CupertinoButton(
+        onPressed: () {  print(galleryPickerController.pickedNotifier.value); },
+        child: Text('Pick'),
+      ),
     );
   }
 }
